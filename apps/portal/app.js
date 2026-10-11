@@ -8,6 +8,8 @@ const elements = {
   steps: [...document.querySelectorAll('.process-step')],
   newRequest: byId('new-request'),
   newRequestLabel: byId('new-request-label'),
+  requestTitle: byId('request-title'),
+  requestIntro: document.querySelector('.request-intro'),
   download: byId('download-request'),
   proofFile: byId('proof-file'),
   fileZone: byId('file-zone'),
@@ -99,6 +101,10 @@ function render() {
   });
   elements.newRequest.disabled = state.mutating || !scenario;
   elements.newRequestLabel.textContent = state.mutating ? 'Creating request…' : active ? 'Create another request' : 'Create owner request';
+  elements.requestTitle.textContent = active ? 'Owner request ready.' : 'Create the owner request.';
+  elements.requestIntro.textContent = active?.mode === 'recorded'
+    ? 'This recorded request is ready for a matching proof. Verification runs now on this machine.'
+    : 'A unique challenge binds the proof to your request. Send the downloaded request to the researcher.';
   elements.download.classList.toggle('is-disabled', !active || state.mutating);
   elements.download.setAttribute('aria-disabled', String(!active || state.mutating));
   elements.download.tabIndex = active && !state.mutating ? 0 : -1;
@@ -106,7 +112,9 @@ function render() {
   elements.fileZone.classList.toggle('is-disabled', !active || state.mutating || state.verifying);
   elements.fileZone.classList.toggle('has-file', Boolean(state.file));
   elements.fileTitle.textContent = state.file ? state.file.name : 'Choose a proof file';
-  elements.fileDescription.textContent = state.file ? `${(state.file.size / 1024).toFixed(1)} KiB · ready for local verification` : 'Or drop one here · maximum 8 MiB';
+  elements.fileDescription.textContent = state.file
+    ? `${(state.file.size / 1024).toFixed(1)} KiB · ready for local verification`
+    : active ? 'Or drop one here · maximum 8 MiB' : 'Create an owner request to enable upload';
   elements.verify.disabled = !active || !state.file || state.mutating || state.verifying;
   byId('request-mode').textContent = active ? (active.mode === 'recorded' ? 'RECORDED REQUEST' : 'FRESH REQUEST') : 'NO REQUEST';
   byId('nonce-short').textContent = shorten(active?.nonce);

@@ -1,7 +1,7 @@
 {
   "format": "proofsphere-public-privacy-check-v1",
   "canary_proof_verified": true,
-  "public_files_scanned": 71,
+  "public_files_scanned": 72,
   "private_observation_files_scanned": 2,
   "representations_checked": [
     "raw bytes",
