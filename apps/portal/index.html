@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f2ed">
+  <meta name="description" content="A real proof of an unauthorized withdrawal without publishing the triggering calldata.">
+  <title>ProofSphere — proof without disclosure</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231b776b'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23fff'/%3E%3Cellipse cx='16' cy='16' rx='4' ry='10' fill='none' stroke='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body data-phase="idle" data-scenario="vulnerable">
+  <a class="skip-link" href="#workspace">Skip to verification</a>
+  <header class="site-header shell">
+    <a class="brand" href="/" aria-label="ProofSphere home"><span class="brand-mark" aria-hidden="true"><span></span></span><span>proof<span class="brand-italic">sphere</span></span></a>
+    <div class="header-right"><nav class="header-nav" aria-label="Main"><a href="#workspace">Workbench</a><a href="#process-title">How it works</a></nav><span class="local-pill"><i aria-hidden="true"></i>LOCAL VERIFIER</span></div>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span> ZERO-KNOWLEDGE EXPLOIT VERIFICATION</p>
+        <h1 id="hero-title">Verify the finding.<br><em>Keep the exploit private.</em></h1>
+        <p class="hero-description">A researcher proves an unauthorized withdrawal is possible. The owner verifies the claim without receiving the triggering transaction.</p>
+        <a class="hero-link" href="#workspace">Open verification workbench <span aria-hidden="true">↗</span></a>
+      </div>
+      <aside class="hero-brief" aria-label="Demo scope"><div class="brief-orbit" aria-hidden="true"><span></span></div><span class="brief-index">THE DEMONSTRATION / 001</span><p>One vault.<br>One precise claim.<br><strong>No disclosed calldata.</strong></p><span class="brief-caption">SYNTHETIC FUNDS <span aria-hidden="true">·</span> LOCAL VERIFICATION</span></aside>
+    </section>
+
+    <section id="workspace" class="workspace" aria-labelledby="workspace-title">
+      <div class="section-bar"><span class="section-number">VERIFICATION WORKBENCH</span><span>01 SELECT · 02 REQUEST · 03 VERIFY</span></div>
+      <div class="workspace-head"><div><p class="kicker">A THREE-STEP OWNER FLOW</p><h2 id="workspace-title">Verify a private finding.</h2></div><p>Select the public target, create an owner request, then verify a matching proof file.</p></div>
+      <div class="studio-grid">
+        <div class="studio-main">
+          <section class="scenario-panel panel" aria-labelledby="scenario-title">
+            <div class="panel-heading"><span class="panel-step">01 / SELECT TARGET</span><span>SELECT A CONTRACT</span></div>
+            <h3 id="scenario-title">Choose the contract.</h3>
+            <div class="scenario-options" role="group" aria-label="Contract variant">
+              <button id="select-vulnerable" class="scenario-option is-selected" type="button" data-scenario-id="vault-vulnerable-v1" aria-pressed="true"><span class="variant-top"><span class="variant-index">01</span><span aria-hidden="true">↗</span></span><span class="variant-name">Vulnerable vault</span><span class="variant-description">Withdrawal sends funds without checking the caller’s credit.</span><span class="variant-bottom"><i aria-hidden="true"></i>INTENTIONAL FAULT</span></button>
+              <button id="select-patched" class="scenario-option" type="button" data-scenario-id="vault-patched-v1" aria-pressed="false"><span class="variant-top"><span class="variant-index">02</span><span aria-hidden="true">↗</span></span><span class="variant-name">Patched vault</span><span class="variant-description">Withdrawal checks and debits the caller’s credit first.</span><span class="variant-bottom"><i aria-hidden="true"></i>REFERENCE REPAIR</span></button>
+            </div>
+            <p class="panel-caption">Fixed synthetic state · Switching variants creates a new owner request and invalidates the previous proof.</p>
+          </section>
+
+          <section class="diagram-panel panel" aria-labelledby="diagram-title">
+            <div class="panel-heading"><span class="panel-step">PUBLIC SETUP</span><span>FIXTURE SCHEMATIC · NOT A LIVE CHAIN</span></div>
+            <div class="diagram-top"><div><p class="kicker">BEFORE THE PRIVATE TRANSACTION</p><h3 id="diagram-title">The fixed starting state.</h3></div><span class="diagram-count">10 <small>DEMO UNITS</small></span></div>
+            <div class="ledger-view" aria-label="Public account and credit relationships">
+              <div class="ledger-account victim-account"><span class="account-role">V / DEPOSITOR</span><span class="account-icon victim-icon" aria-hidden="true">V</span><strong>Victim</strong><span class="account-line">Vault credit <b>10 units</b></span><span class="account-line">Wallet <b>0 units</b></span></div>
+              <div class="ledger-connector connector-left" aria-hidden="true"><span class="connector-label">DEPOSIT RECORDED</span><span class="connector-line"></span></div>
+              <div class="ledger-account vault-account"><span class="account-role">T / CONTRACT</span><span class="vault-disc" aria-hidden="true"><span>10</span></span><strong>Vault pool</strong><span class="account-line">Native balance <b>10 units</b></span><span class="account-line">Owes victim <b>10 units</b></span></div>
+              <div class="ledger-connector connector-right" aria-hidden="true"><span class="connector-label" id="path-label">UNCHECKED PATH</span><span class="connector-line"></span></div>
+              <div class="ledger-account attacker-account"><span class="account-role">A / FIXED CALLER</span><span class="account-icon attacker-icon" aria-hidden="true">A</span><strong>Attacker</strong><span class="account-line">Vault credit <b>0 units</b></span><span class="account-line">Wallet <b>0 units</b></span></div>
+            </div>
+            <div class="path-note" id="path-note"><span class="path-symbol" aria-hidden="true">↗</span><p><strong>Vulnerable path.</strong> A direct withdrawal can transfer a positive amount to the uncredited caller while the victim’s ledger stays unchanged.</p></div>
+            <p class="diagram-footnote">The proof publishes a yes/no claim. It does not reveal the private transfer amount.</p>
+          </section>
+
+          <section class="process-panel panel" aria-labelledby="process-title">
+            <div class="panel-heading"><span class="panel-step">UNDERSTAND THE PROOF</span><span>SELECT A STEP TO EXPLORE</span></div>
+            <h3 id="process-title">What crosses the boundary?</h3>
+            <div class="process-grid" role="group" aria-label="Proof process">
+              <button class="process-step is-focused" type="button" data-explain="setup" aria-pressed="true"><span class="process-no">01</span><span class="process-icon" aria-hidden="true">◇</span><strong>Public setup</strong><small>Code + fixed state</small><span class="process-track" aria-hidden="true"></span></button>
+              <button class="process-step" type="button" data-explain="witness" aria-pressed="false"><span class="process-no">02</span><span class="process-icon" aria-hidden="true">⌁</span><strong>Private input</strong><small>Researcher’s machine</small><span class="process-track" aria-hidden="true"></span></button>
+              <button class="process-step" type="button" data-explain="receipt" aria-pressed="false"><span class="process-no">03</span><span class="process-icon" aria-hidden="true">▤</span><strong>Proof artifact</strong><small>Opaque receipt</small><span class="process-track" aria-hidden="true"></span></button>
+              <button class="process-step" type="button" data-explain="verify" aria-pressed="false"><span class="process-no">04</span><span class="process-icon" aria-hidden="true">◎</span><strong>Verification</strong><small>Owner checks locally</small><span class="process-track" aria-hidden="true"></span></button>
+            </div>
+            <div class="process-explainer"><span id="explain-label">01 / PUBLIC SETUP</span><p id="explain-body">The owner pins the compiled contract, three accounts, the EVM environment, and the precise claim. Their hashes identify the scenario the proof must use.</p><span class="explain-boundary" id="explain-boundary">VISIBLE TO BOTH SIDES</span></div>
+          </section>
+        </div>
+
+        <aside class="studio-side" aria-label="Request and proof verification">
+          <section class="request-panel panel" aria-labelledby="request-title">
+            <div class="panel-heading"><span class="panel-step">02 / OWNER REQUEST</span><span id="request-mode">NO REQUEST</span></div>
+            <h3 id="request-title">Create the owner request.</h3><p class="request-intro">A unique challenge binds the proof to your request. Send the downloaded request to the researcher.</p>
+            <div class="nonce-card"><span>CHALLENGE NONCE</span><code id="nonce-short">No active challenge</code><span id="request-caption">Create a request to continue.</span></div>
+            <button id="new-request" class="primary-button" type="button"><span id="new-request-label">Create owner request</span><span aria-hidden="true">↗</span></button>
+            <a id="download-request" class="secondary-link is-disabled" href="/api/challenge" download="challenge.json" aria-disabled="true" tabindex="-1">Download challenge JSON <span aria-hidden="true">↓</span></a>
+            <p id="recorded-note" class="recorded-note" hidden>Recorded request loaded. A matching proof can be checked now; creating a new request replaces it.</p>
+          </section>
+
+          <section class="verification-panel panel" aria-labelledby="verification-title">
+            <div class="panel-heading"><span class="panel-step">03 / VERIFY PROOF</span><span>RECEIPT ONLY</span></div>
+            <h3 id="verification-title">Check the proof.</h3><p class="verification-intro">Upload the researcher’s <code>.psproof</code> file. Only the proof receipt is shared; calldata stays private.</p>
+            <label class="file-zone" id="file-zone"><input id="proof-file" type="file" accept=".psproof,application/octet-stream" disabled><span class="file-symbol" aria-hidden="true">↥</span><strong id="file-title">Choose a proof file</strong><span id="file-description">Create an owner request to enable upload</span></label>
+            <button id="verify-button" class="verify-button" type="button" disabled><span>Verify proof</span><span class="verify-arrow" aria-hidden="true">↗</span></button>
+            <div id="result" class="result-card" role="status" aria-live="polite" aria-atomic="true"><span class="result-indicator" aria-hidden="true"></span><span class="result-text"><strong id="result-title">Awaiting a request</strong><span id="result-description">Select a contract and create an owner challenge.</span></span></div>
+            <p class="status-caveat">A failed or missing proof does not establish that a contract is safe.</p>
+          </section>
+
+          <details class="provenance-panel panel" id="provenance"><summary><span>Public commitments & request details</span><span aria-hidden="true">+</span></summary><div class="provenance-body"><p>The proof must bind to these registered values. These hashes reveal neither private calldata nor a severity score.</p><dl><div><dt>Scenario digest</dt><dd id="digest-scenario">—</dd></div><div><dt>Contract code</dt><dd id="digest-code">—</dd></div><div><dt>Initial state</dt><dd id="digest-state">—</dd></div><div><dt>Environment</dt><dd id="digest-environment">—</dd></div><div><dt>Claim</dt><dd id="digest-claim">—</dd></div><div><dt>Guest image</dt><dd id="digest-image">—</dd></div><div><dt>Owner nonce</dt><dd id="digest-nonce">—</dd></div></dl></div></details>
+        </aside>
+      </div>
+    </section>
+
+    <section class="boundary-section" aria-labelledby="boundary-title"><div class="section-bar"><span class="section-number">READING THE RESULT</span><span>WHAT THE OWNER CAN AND CANNOT INFER</span></div><div class="boundary-grid"><div class="boundary-lead"><p class="kicker">THE MEANING OF ACCEPTANCE</p><h2 id="boundary-title">What does acceptance mean?</h2></div><div class="boundary-copy"><div><span class="boundary-mark yes" aria-hidden="true">✓</span><p><strong>What acceptance demonstrates</strong>A private input exists that makes this exact synthetic vault lose funds to a caller with zero credit, under the pinned interpreter and public setup.</p></div><div><span class="boundary-mark no" aria-hidden="true">—</span><p><strong>What it does not establish</strong>Authorship, discovery priority, maximum loss, real-chain applicability, contract safety, or a severity rating.</p></div></div></div></section>
+  </main>
+  <footer class="site-footer shell"><span class="footer-brand">proof<span>sphere</span></span><span>PRIVATE INPUT · PUBLIC CONFIDENCE</span><a href="#main">BACK TO TOP ↑</a></footer>
+</body>
+</html>

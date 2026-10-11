@@ -1,0 +1,20 @@
+[package]
+name = "proofsphere-portal"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+proofsphere-model.workspace = true
+proofsphere-proof = { path = "../proof" }
+axum = "0.8"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync", "signal"] }
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+hex.workspace = true
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }
+tempfile = "=3.27.0"

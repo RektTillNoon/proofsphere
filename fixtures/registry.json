@@ -1,0 +1,29 @@
+{
+  "format": "proofsphere-registry-v1",
+  "scenarios": [
+    {
+      "id": "vault-patched-v1",
+      "label": "Patched vault",
+      "state_file": "vault-patched/state.json",
+      "environment_file": "vault-patched/environment.json",
+      "code_digest": "8ceec20a1e0aa99e7087006a3030a31e055c2d8a7bf32522c69f2f0c00de5280",
+      "state_digest": "8ea623b80d72d1a5bb685690b7b6f254da05c4bdb174da9ed47d4e5d939139b4",
+      "environment_digest": "29a6c857d3901adf99e634e9e3ee8de1908d470575ca84ed02ea948f00429855",
+      "claim_digest": "f357a995327b7e201e7cc67c22116d2c111bfa51117777af0326b32c078d3fc6",
+      "scenario_digest": "7033b59597fd6a92e2bd9fc2079d0e7d920b39820786b97cc1032aacbcbd8aca",
+      "guest_image_id": "433c16e0d7fe361bb3ca734dfee48b415e703bf8e2cdddd302c053716ce4b334"
+    },
+    {
+      "id": "vault-vulnerable-v1",
+      "label": "Vulnerable vault",
+      "state_file": "vault-vulnerable/state.json",
+      "environment_file": "vault-vulnerable/environment.json",
+      "code_digest": "be238dc1beeb828265998e204990ac1ad2109ed9a587ef3acb7acab00cb39f53",
+      "state_digest": "4df82b6bb3ee6e12d75d4298d4c482c3be45debc3d9d4c64c3d48a68bf1810e9",
+      "environment_digest": "29a6c857d3901adf99e634e9e3ee8de1908d470575ca84ed02ea948f00429855",
+      "claim_digest": "f357a995327b7e201e7cc67c22116d2c111bfa51117777af0326b32c078d3fc6",
+      "scenario_digest": "89a93f5c99ecd9672a71473f0eec06f5975c385b8d206c81a0ca5e482b666088",
+      "guest_image_id": "433c16e0d7fe361bb3ca734dfee48b415e703bf8e2cdddd302c053716ce4b334"
+    }
+  ]
+}

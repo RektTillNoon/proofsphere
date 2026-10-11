@@ -1,0 +1,8 @@
+{
+  "name": "proofsphere-contract-compiler",
+  "private": true,
+  "type": "module",
+  "scripts": { "compile": "node compile.mjs" },
+  "dependencies": { "solc": "0.8.26" },
+  "packageManager": "pnpm@11.9.0"
+}

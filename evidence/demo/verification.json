@@ -1,0 +1,49 @@
+{
+  "format": "proofsphere-public-verification-v1",
+  "proof_bytes": 223388,
+  "guest_image_id": "433c16e0d7fe361bb3ca734dfee48b415e703bf8e2cdddd302c053716ce4b334",
+  "runs": [
+    {
+      "exit_code": 0,
+      "elapsed_ms": 1034.808,
+      "claim": "Unauthorized withdrawal demonstrated",
+      "code": "CLAIM_VERIFIED",
+      "status": "accepted"
+    },
+    {
+      "exit_code": 0,
+      "elapsed_ms": 20.624,
+      "claim": "Unauthorized withdrawal demonstrated",
+      "code": "CLAIM_VERIFIED",
+      "status": "accepted"
+    },
+    {
+      "exit_code": 0,
+      "elapsed_ms": 21.026,
+      "claim": "Unauthorized withdrawal demonstrated",
+      "code": "CLAIM_VERIFIED",
+      "status": "accepted"
+    }
+  ],
+  "adversarial": {
+    "changed_challenge": {
+      "exit_code": 2,
+      "elapsed_ms": 20.992,
+      "code": "CHALLENGE_MISMATCH",
+      "status": "rejected"
+    },
+    "corrupted_receipt": {
+      "exit_code": 2,
+      "elapsed_ms": 8.731,
+      "code": "RECEIPT_REJECTED",
+      "status": "rejected"
+    },
+    "patched_scenario": {
+      "exit_code": 2,
+      "elapsed_ms": 20.477,
+      "code": "SCENARIO_MISMATCH",
+      "status": "rejected"
+    }
+  },
+  "verifier_mode": "separate release processes; RISC0_DEV_MODE=1 hostile environment; production verifier still disables dev mode"
+}

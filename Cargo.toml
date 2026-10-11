@@ -1,0 +1,28 @@
+[workspace]
+resolver = "2"
+members = ["crates/model", "crates/runner", "methods", "crates/proof", "crates/cli", "crates/portal"]
+default-members = ["crates/model", "crates/runner", "crates/proof"]
+exclude = ["methods/guest"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+license = "MIT"
+
+[workspace.dependencies]
+proofsphere-model = { path = "crates/model" }
+proofsphere-runner = { path = "crates/runner" }
+primitive-types = { version = "=0.12.2", default-features = false, features = ["std"] }
+sha2 = "=0.10.9"
+sha3 = "=0.10.8"
+hex = "=0.4.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+evm = "=0.42.0"
+risc0-zkvm = { version = "=3.0.6", default-features = false, features = ["std", "disable-dev-mode"] }
+clap = { version = "4.5", features = ["derive"] }
+
+[profile.release]
+debug = 0
+lto = "thin"
