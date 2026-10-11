@@ -1,23 +1,71 @@
 # ProofSphere
 
-ProofSphere is a hackathon project for proving that a smart contract permits an unauthorized withdrawal while keeping the triggering transaction calldata private.
+ProofSphere is a local hackathon demonstration of a narrow claim: an ordinary account can withdraw synthetic funds from a vulnerable vault without deposit credit, while the victim's credit remains unchanged and the vault becomes undercollateralized. A RISC Zero guest executes one private transaction against a fixed public EVM snapshot. The owner receives a succinct proof, then checks it against a trusted guest image, registered scenario, and challenge nonce. The triggering calldata stays in the researcher's local file.
 
-## Design dossier
+The public toy contract deliberately exposes its defect to readers. This demonstration shows that the **verification channel** does not need the exact transaction payload; it does not claim to keep the bug itself unknown, certify a real deployment, or score severity. The patched vault provides a control case.
 
-The reviewed **v0.2** dossier is the implementation baseline:
+## Try the recorded demonstration
 
-- [Read the PDF](docs/proofsphere-hackathon-technical-design-dossier.pdf)
-- [Edit the LaTeX source](docs/proofsphere-hackathon-technical-design-dossier.tex)
+The repository includes a genuine locally generated proof and the exact owner challenge that it answers. Build the production verifier with Rust 1.97.0 and the pinned RISC Zero guest toolchain described below, then run:
 
-Implementation has not started. The dossier specifies the proof statement, architecture, data formats, tests, and implementation gates.
+```sh
+./tools/build.sh build --release --locked -p proofsphere-cli
+./tools/build.sh build --release --locked -p proofsphere-portal
+target/release/proofsphere verify \
+  --scenario vault-vulnerable-v1 \
+  --challenge evidence/demo/challenge.json \
+  --proof evidence/demo/vulnerable.psproof --json
+target/release/proofsphere-portal \
+  --recorded-challenge evidence/demo/challenge.json
+```
 
-## Initial scope
+Open [the loopback portal](http://127.0.0.1:4173), choose `evidence/demo/vulnerable.psproof`, and select **Verify proof**. The browser submits only the public proof artifact. The server owns the expected image, scenario, and recorded nonce; it does not accept these from the upload. The UI explicitly labels the recorded request. Selecting a new scenario or creating a new request replaces it and invalidates the previous proof.
 
-- A deliberately vulnerable Solidity vault and a patched variant, using synthetic funds.
-- Private calldata supplied to a local RISC Zero prover written in Rust.
-- Independent verification of a genuine proof of unauthorized withdrawal.
-- A small local dashboard using JavaScript, HTML, and CSS.
+For a fresh challenge, start the portal without `--recorded-challenge`, create an owner request in the UI, download its JSON, generate a new proof with the CLI, and upload that proof. Generation can take minutes on a laptop; recorded mode allows a live verification demonstration using a previously produced genuine receipt.
 
-Severity scoring, live-chain execution, researcher attribution, and bounty payments are deferred. The first implementation milestone is a genuine vault proof verified through the CLI before dashboard work.
+## Reproduce the public assets
 
-The public toy contract may make the defect obvious. The demonstration establishes that verification does not require transmitting the exact exploit payload; it does not certify contract safety.
+The host is pinned to Rust 1.97.0 in `rust-toolchain.toml`. The guest uses RISC Zero SDK, r0vm, and cargo-risczero 3.0.6 with its `r0.1.97.0` Rust toolchain. Install `rzup` from the [official RISC Zero instructions](https://dev.risczero.com/api/zkvm/install), place `rzup`, `r0vm`, and `cargo-risczero` on the path or in `.proofsphere-tools/bin`, and install the components into this repository's ignored `.proofsphere-tools/risc0` directory:
+
+```sh
+export RISC0_HOME="$PWD/.proofsphere-tools/risc0"
+rzup install rust 1.97.0
+rzup install r0vm 3.0.6
+rzup install cargo-risczero 3.0.6
+./tools/build.sh build --release --locked -p proofsphere-cli
+./tools/build.sh build --release --locked -p proofsphere-portal
+```
+
+Build the two binaries in separate commands so Cargo does not combine the CLI's proving feature into the verifier-only portal. `tools/build.sh` keeps the guest toolchain under this checkout and injects `-std=metal3.0` only when the upstream RISC Zero Metal kernel is compiled by macOS Xcode 27; the vendored SDK source is unchanged. Linux does not use that wrapper. RISC Zero version, host and guest locks, EVM version, compiler settings, and image ID are recorded in [toolchain metadata](evidence/toolchain.json).
+
+The public compiler artifacts are pinned to Solidity 0.8.26, Cancun, optimizer runs 200, and no bytecode metadata. With Node 22 and pnpm 11.9.0, regenerate them and independently check the fixture and registry against the final guest image:
+
+```sh
+pnpm --dir tools/contracts install --frozen-lockfile
+pnpm --dir tools/contracts compile
+target/release/proofsphere fixture
+target/release/proofsphere registry
+```
+
+The fixture and registry commands accept already committed files only when their regenerated bytes match. They fail on a changed existing file. `forge test --root contracts -vv` checks the vulnerable and patched contracts. `python3 tools/verify-evidence.py` runs three fresh verifier processes plus changed-challenge, corrupted-receipt, and patched-scenario rejections; its public results are in [verification evidence](evidence/demo/verification.json).
+
+## Generate a new proof locally
+
+The witness path is an ignored, user-only local file. The `prove` command refuses remote prover settings, executes and verifies a real succinct proof locally, and publishes its output only after a complete write. It never replaces an existing proof file.
+
+```sh
+target/release/proofsphere demo-witness
+target/release/proofsphere challenge \
+  --scenario vault-vulnerable-v1 --out .proofsphere-private/fresh-challenge.json
+target/release/proofsphere prove \
+  --scenario vault-vulnerable-v1 \
+  --challenge .proofsphere-private/fresh-challenge.json \
+  --witness .proofsphere-private/reference.bin \
+  --out .proofsphere-private/fresh.psproof
+target/release/proofsphere verify \
+  --scenario vault-vulnerable-v1 \
+  --challenge .proofsphere-private/fresh-challenge.json \
+  --proof .proofsphere-private/fresh.psproof --json
+```
+
+Only `.psproof` needs to be transferred to the owner. Private proving time, cycle counts, memory measurements, and diagnostics stay under `.proofsphere-private/`. The public journal contains only the scenario digest, nonce, and fixed true claim flag. See the [full design dossier](docs/proofsphere-hackathon-technical-design-dossier.pdf), [implementation record](docs/implementation-status.md), and [public verification report](evidence/demo/verification.json) for the exact relation, limits, and checks.

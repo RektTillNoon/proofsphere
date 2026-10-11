@@ -1,0 +1,16 @@
+[package]
+name = "proofsphere-guest"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+
+[dependencies]
+risc0-zkvm = { version = "=3.0.6", default-features = false, features = ["std"] }
+proofsphere-model = { path = "../../crates/model" }
+proofsphere-runner = { path = "../../crates/runner" }
+
+[profile.release]
+debug = 0
+lto = "thin"
+codegen-units = 1

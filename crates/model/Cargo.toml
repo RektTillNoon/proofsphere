@@ -1,0 +1,22 @@
+[package]
+name = "proofsphere-model"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+default = []
+json = ["dep:serde", "dep:serde_json", "dep:hex"]
+
+[dependencies]
+primitive-types.workspace = true
+sha2.workspace = true
+sha3.workspace = true
+serde = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+hex = { workspace = true, optional = true }
+
+[dev-dependencies]
+hex.workspace = true
+serde_json.workspace = true

@@ -1,0 +1,18 @@
+[package]
+name = "proofsphere-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "proofsphere"
+path = "src/main.rs"
+
+[dependencies]
+clap.workspace = true
+proofsphere-model = { workspace = true, features = ["json"] }
+proofsphere-runner.workspace = true
+proofsphere-proof = { path = "../proof", features = ["prove"] }
+serde_json.workspace = true
+hex.workspace = true

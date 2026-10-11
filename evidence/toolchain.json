@@ -1,0 +1,68 @@
+{
+  "format": "proofsphere-public-toolchain-v1",
+  "host": {
+    "os": "macOS 27.0.1",
+    "architecture": "arm64",
+    "model": "MacBookPro18,3",
+    "chip": "Apple M1 Pro",
+    "memory": "16 GB",
+    "prover_backend": "RISC Zero LocalProver with macOS Metal kernels"
+  },
+  "tools": {
+    "host_rustc": "rustc 1.97.0 (2d8144b78 2026-07-07)",
+    "guest_rustc": "rustc 1.97.0-dev (e638c6cfe 2026-07-15)",
+    "risc0_zkvm": "3.0.6",
+    "guest_risc0_zkvm": "3.0.6",
+    "r0vm": "3.0.6",
+    "cargo_risczero": "3.0.6",
+    "evm": "0.42.0",
+    "solc": "0.8.26",
+    "foundry": "forge Version: 1.8.5",
+    "node": "v22.23.1",
+    "pnpm": "11.9.0"
+  },
+  "features": {
+    "cli_local_prove": true,
+    "portal_verifier_only": true,
+    "sdk_disable_dev_mode": true,
+    "bonsai_dependency": false,
+    "audit_command": "cargo tree -p proofsphere-portal -e features --locked"
+  },
+  "limits": {
+    "private_calldata_bytes": 256,
+    "proof_payload_bytes": 8388608,
+    "guest_segment_limit_po2": 20,
+    "guest_session_cycle_limit": 134217728
+  },
+  "build_compatibility": "On macOS Xcode 27, tools/build-bin/xcrun selects Metal 3.0 for unchanged upstream kernels.",
+  "locks_sha256": {
+    "host": "22271219110e959e5b5a91956ab9ea69dacda1f4170ca31038b54cb82f5b0a99",
+    "guest": "23d9b6d9ea09cec6afa24770307f3469657f7405dc3d6221fecc87ec3c7ab88d",
+    "compiler": "11e8ee036cc242c245216ff107069a1bd23be172f3f0eac424b639cf48d2222c"
+  },
+  "compiler_runtime_sha256": {
+    "vulnerable": "be238dc1beeb828265998e204990ac1ad2109ed9a587ef3acb7acab00cb39f53",
+    "patched": "8ceec20a1e0aa99e7087006a3030a31e055c2d8a7bf32522c69f2f0c00de5280"
+  },
+  "public_proof_sha256": "2bb964c00c00de2d7aab28da7d873d42307406ecfc7453da97369814dfad89cc",
+  "scenarios": [
+    {
+      "id": "vault-patched-v1",
+      "guest_image_id": "433c16e0d7fe361bb3ca734dfee48b415e703bf8e2cdddd302c053716ce4b334",
+      "scenario_digest": "7033b59597fd6a92e2bd9fc2079d0e7d920b39820786b97cc1032aacbcbd8aca",
+      "code_digest": "8ceec20a1e0aa99e7087006a3030a31e055c2d8a7bf32522c69f2f0c00de5280",
+      "state_digest": "8ea623b80d72d1a5bb685690b7b6f254da05c4bdb174da9ed47d4e5d939139b4",
+      "environment_digest": "29a6c857d3901adf99e634e9e3ee8de1908d470575ca84ed02ea948f00429855",
+      "claim_digest": "f357a995327b7e201e7cc67c22116d2c111bfa51117777af0326b32c078d3fc6"
+    },
+    {
+      "id": "vault-vulnerable-v1",
+      "guest_image_id": "433c16e0d7fe361bb3ca734dfee48b415e703bf8e2cdddd302c053716ce4b334",
+      "scenario_digest": "89a93f5c99ecd9672a71473f0eec06f5975c385b8d206c81a0ca5e482b666088",
+      "code_digest": "be238dc1beeb828265998e204990ac1ad2109ed9a587ef3acb7acab00cb39f53",
+      "state_digest": "4df82b6bb3ee6e12d75d4298d4c482c3be45debc3d9d4c64c3d48a68bf1810e9",
+      "environment_digest": "29a6c857d3901adf99e634e9e3ee8de1908d470575ca84ed02ea948f00429855",
+      "claim_digest": "f357a995327b7e201e7cc67c22116d2c111bfa51117777af0326b32c078d3fc6"
+    }
+  ]
+}

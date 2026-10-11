@@ -1,0 +1,19 @@
+{
+  "format": "proofsphere-public-privacy-check-v1",
+  "canary_proof_verified": true,
+  "public_files_scanned": 72,
+  "private_observation_files_scanned": 2,
+  "representations_checked": [
+    "raw bytes",
+    "lowercase hex",
+    "standard base64"
+  ],
+  "canary_or_complete_payload_found": false,
+  "remote_or_dev_proving_settings_rejected": [
+    "RISC0_DEV_MODE",
+    "RISC0_PROVER",
+    "BONSAI_API_KEY"
+  ],
+  "offline_generation": "macOS sandbox-exec policy denied network access for both reference and canary local proving commands",
+  "limit": "Absence of these strings is a leakage check, not an independent zero-knowledge proof."
+}

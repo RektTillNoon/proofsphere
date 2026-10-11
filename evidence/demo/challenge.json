@@ -1,0 +1,7 @@
+{
+  "format": "proofsphere-challenge-v1",
+  "scenario_id": "vault-vulnerable-v1",
+  "scenario_digest": "89a93f5c99ecd9672a71473f0eec06f5975c385b8d206c81a0ca5e482b666088",
+  "guest_image_id": "433c16e0d7fe361bb3ca734dfee48b415e703bf8e2cdddd302c053716ce4b334",
+  "nonce": "2cfc7b5536a4330eb95e95ddb2f5fb3bb7e62707007fa6a98de7aa0bd81b627b"
+}

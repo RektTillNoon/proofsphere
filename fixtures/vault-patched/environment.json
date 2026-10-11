@@ -1,0 +1,15 @@
+{
+  "format": "proofsphere-environment-v1",
+  "hardfork": "cancun",
+  "chain_id": "31337",
+  "origin": "0x0000000000000000000000000000000000003001",
+  "gas_price": "0",
+  "block_number": "1",
+  "coinbase": "0x0000000000000000000000000000000000000000",
+  "timestamp": "1",
+  "difficulty": "0",
+  "gas_limit": "500000",
+  "base_fee": "0",
+  "block_randomness": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "block_hashes": []
+}

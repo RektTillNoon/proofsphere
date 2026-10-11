@@ -1,0 +1,27 @@
+{
+  "format": "proofsphere-browser-smoke-v1",
+  "browser": "Chrome DevTools controlled loopback page",
+  "server": "separately built release verifier-only portal, recorded challenge mode",
+  "desktop": {
+    "viewport": "1440x900",
+    "horizontal_overflow": false,
+    "genuine_receipt_accepted": true,
+    "visible_mode": "RECORDED REQUEST",
+    "screenshot": "desktop-accepted.jpg"
+  },
+  "mobile": {
+    "viewport": "390x844",
+    "horizontal_overflow": false,
+    "screenshot": "mobile-recorded-ready.png"
+  },
+  "interactions": {
+    "malformed_file_preflight_rejected_without_upload": true,
+    "creating_fresh_request_immediately_cleared_accepted_state": true,
+    "fresh_request_changed_nonce_and_cleared_selected_file": true,
+    "recorded_receipt_rejected_against_fresh_request": "CHALLENGE_MISMATCH",
+    "fresh_matching_receipt_accepted": true,
+    "keyboard_enter_activated_proof_path_button": true,
+    "console_errors_or_warnings": 0
+  },
+  "limit": "Screenshots show browser states; cryptographic acceptance is independently established by the CLI and portal verifier."
+}

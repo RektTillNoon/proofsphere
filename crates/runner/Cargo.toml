@@ -1,0 +1,15 @@
+[package]
+name = "proofsphere-runner"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+proofsphere-model.workspace = true
+evm.workspace = true
+sha3.workspace = true
+
+[dev-dependencies]
+hex.workspace = true
+serde_json.workspace = true

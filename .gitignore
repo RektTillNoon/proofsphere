@@ -2,6 +2,15 @@
 
 # Private witnesses, proving intermediates, and execution measurements.
 /.proofsphere-private/
+/.proofsphere-tools/
+/target/
+/methods/guest/target/
+node_modules/
+__pycache__/
+*.pyc
+/contracts/out/
+/contracts/cache/
+
 
 # LaTeX build sidecars; keep the source and companion PDF.
 *.aux

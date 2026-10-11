@@ -30,7 +30,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\dossiertitle}
-\fancyhead[R]{\small Design baseline v0.2}
+\fancyhead[R]{\small Design and implementation v0.3}
 \fancyfoot[C]{\thepage}
 \setlength{\headheight}{15pt}
 \setcounter{tocdepth}{1}
@@ -43,7 +43,7 @@
 \begin{center}
 \begin{tabular}{L{0.21\linewidth}L{0.69\linewidth}}
 \textbf{Workspace} & \filepath{/Users/light/Documents/proofsphere} \\
-\textbf{Status} & Reviewed baseline v0.2; implementation not started \\
+\textbf{Status} & v0.3 implementation record; final evidence in the appendix \\
 \textbf{Scope} & One synthetic vault, private calldata, genuine local proof, independent verification \\
 \textbf{Canonical source} & \filepath{docs/proofsphere-hackathon-technical-design-dossier.tex} \\
 \textbf{Companion} & Same basename with the \code{.pdf} extension \\
@@ -52,7 +52,7 @@
 \end{center}
 
 \begin{abstract}
-ProofSphere is a prototype for demonstrating an exploitable security property without transmitting the triggering transaction payload to the verifier. The selected demonstration uses a deliberately vulnerable Solidity vault with a fixed, synthetic initial state. A researcher executes a private transaction inside a zero-knowledge virtual machine and proves that an account with no deposit credit gains funds while the vault becomes undercollateralized and the victim's claim remains unchanged. An independent verifier accepts only a genuine proof bound to its expected guest program, registered scenario, and challenge. The first version returns a Boolean impact claim; it excludes severity scoring, bounty payments, arbitrary target uploads, and live-chain execution. This dossier defines the trust boundary, exact execution relation, artifact formats, ownership, implementation sequence, and acceptance gates. Repository inspection found no implementation, tests, or project tooling. External source inspection supports the architecture but does not establish local build compatibility, proof-generation cost, or cryptographic correctness of a future implementation. Those are explicit implementation gates.
+ProofSphere demonstrates an exploitable security property without transmitting the triggering transaction payload to the verifier. The demonstration uses a deliberately vulnerable Solidity vault with a fixed, synthetic initial state. A researcher executes a private transaction inside a zero-knowledge virtual machine and proves that an account with no deposit credit gains funds while the vault becomes undercollateralized and the victim's claim remains unchanged. An independent verifier accepts only a genuine proof bound to its expected guest program, registered scenario, and challenge. The first version returns a Boolean impact claim; it excludes severity scoring, bounty payments, arbitrary target uploads, and live-chain execution. This dossier defines the trust boundary, exact execution relation, artifact formats, ownership, implementation sequence, and acceptance gates. Sections describing the initially empty repository and untested implementation are preparation history. The final appendix records the implemented system and its public verification evidence. No independent cryptographic audit or real-chain applicability is claimed.
 \end{abstract}
 \clearpage
 \tableofcontents
@@ -641,9 +641,9 @@ Version drift & SDK, compiler, codec, or locks change while receipts remain acce
 
 These limits are part of the demonstrated claim. Production use would require broader interpreter and cryptographic review, provenance of real deployed state, a threat model for disclosure and attribution, and independent security assessment. They are deferred work rather than implicit hackathon features.
 
-\section{Exact Next Sequence}
+\section{Implementation Sequence}
 \begin{enumerate}
-\item Inspect checkout/branch and this dossier again before implementation. Confirm that user authorization includes implementation; the current request is documentation. Preserve unrelated work and follow the applicable branch policy.
+\item Inspect checkout/branch and this dossier before implementation. The user subsequently authorized full implementation. Work proceeded on a development branch, preserving the initial public dossier commit.
 \item Create the minimal workspace and proof test. Verify host toolchain with \code{rustup run 1.97.0 rustc --version}. Obtain the RISC Zero installer through the official installation reference, then pin components rather than requesting an unversioned latest installation \cite{risc0install,risc0rust}:
 \begin{verbatim}
 rzup install rust 1.97.0
@@ -718,11 +718,25 @@ Observed locally & Initially empty repository; final review found only docs and 
 Observed externally & Pinned source and official documentation interfaces listed in the references. No upstream program executed. \\
 User requirement & ZK evidence of an exploit without disclosing it; user accepts an intentionally vulnerable local contract; later instruction permits dropping severity. \\
 Selected design & Fixed synthetic unauthorized-withdrawal relation, private calldata only, genuine local succinct receipt, independent verification. \\
-Not established & Local SDK build, proof performance, actual implementation behavior, cryptographic audit, real-chain applicability, or production security. \\
+Not established at v0.2 & Local SDK build, proof performance, actual implementation behavior, cryptographic audit, real-chain applicability, or production security. The implementation results below close the first three local evidence gaps only. \\
 Initial revision & v0.1; prepared \initialtimestamp. Incorporates the scope simplification during creation. \\
 Reviewed revision & v0.2; prepared \preparedtimestamp. Resolves environment, state adapter, local prover, exchange format, privacy diagnostics, and lifecycle gaps. Documentation only; implementation feasibility remains gated. \\
+Implementation revision & v0.3; 11 October 2026. Adds the tested local implementation and public evidence record while preserving the v0.2 design history. \\
 \bottomrule
 \end{longtable}
+
+\section{Implementation Verification Record (v0.3)}
+The final system implements the fixed statement in a RISC Zero 3.0.6 guest and the \code{evm} 0.42.0 interpreter. Solidity 0.8.26 produced 654-byte vulnerable and 800-byte patched runtime programs; their only storage variable is the credit mapping in slot 0. The victim's ten-unit deposit was executed as an ordinary transaction to create both public snapshots. Regeneration matched all committed compiler artifacts byte-for-byte, and the fixture/registry commands independently recomputed matching files and commitments.
+
+The release-mode local prover produced a genuine succinct receipt for the vulnerable scenario, published as \filepath{evidence/demo/vulnerable.psproof} with its exact owner challenge. The artifact is 223,388 bytes. The guest image ID and both scenario digests are recorded in \filepath{evidence/toolchain.json}; the public journal contains only its fixed format, scenario digest, nonce, and true claim flag. Three separate release-verifier processes accepted the saved receipt, with measured wall times of 1034.808, 20.624, and 21.026 milliseconds. These timings include process startup and reflect this machine, not a general performance guarantee. A changed nonce, corrupted receipt, and patched-scenario expectation all rejected. The same reference calldata reverts against the patched vault. Detailed results are in \filepath{evidence/demo/verification.json}.
+
+The local machine was a MacBook Pro with an Apple M1 Pro, 16 GB memory, and macOS 27.0.1. Reference proof generation ran with outbound networking denied by \code{sandbox-exec}; a second proof with a random 32-byte trailing-calldata canary did the same. The second receipt independently verified. A scan of public files and observed proof output found neither the exact canary nor complete payload in raw, lowercase hex, or standard base64 form. Remote/development proving settings were rejected. Only pass/fail privacy observations appear in \filepath{evidence/privacy.json}; witness bytes, proof-generation duration, cycles, and peak memory stay in the ignored \filepath{.proofsphere-private/} directory. String absence is a leakage check, not an independent proof of zero knowledge.
+
+The CLI and portal are built separately so Cargo does not unify the CLI's \code{prove} feature into the portal. The portal's resolved feature tree contains the SDK's \code{disable-dev-mode} feature and no proving or Bonsai dependency. The production verifier constructs an explicit succinct-only context without reading \code{RISC0_DEV_MODE}; it rejects fake and other unsupported receipt variants even if that variable is set. On Xcode 27, \filepath{tools/build-bin/xcrun} adds \code{-std=metal3.0} for compilation of unchanged upstream Metal kernels. The compatibility flag changes no proof semantics.
+
+Focused tests passed: six Foundry contract tests, five model encoding/transport tests, six native EVM runner tests, five bounded-container/fake-receipt tests, a genuine committed-receipt binding test, and four portal lifecycle/security tests. The recorded browser flow accepted the saved proof at desktop width; a fresh request cleared the accepted state and rejected replay, and malformed file preflight uploaded nothing. Desktop at 1440 pixels and mobile at 390 pixels had no horizontal overflow; keyboard activation of a proof-path control worked. The desktop and mobile screenshots and browser smoke record live in \filepath{evidence/ui/}. The complete commands and gate status are in \filepath{docs/implementation-status.md}.
+
+The delivered claim remains bounded to one synthetic fixture, one transaction, and this pinned interpreter and proof stack. No discovery priority, maximum loss, severity, real-chain applicability, production safety, or independent cryptographic audit is implied.
 
 \section{Artifact Reproduction}
 The canonical source and PDF reside together under \filepath{docs/}. Generate compilation sidecars in a temporary directory, then copy the successful PDF beside the source. A suitable local export command is:

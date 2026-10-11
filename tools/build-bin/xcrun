@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+# RISC Zero 3.0.6's unchanged Metal sources compile with Metal 3.0. Xcode 27's
+# default language makes assignment of integer zero to Fp ambiguous.
+# Select the compatible language for Metal compilation only; all other xcrun
+# operations pass through unchanged. No kernel or proof implementation is patched.
+if [[ $# -ge 3 && "$1" == "--sdk" && "$2" == "macosx" && "$3" == "metal" ]]; then
+  exec /usr/bin/xcrun "$@" -std=metal3.0
+fi
+exec /usr/bin/xcrun "$@"
