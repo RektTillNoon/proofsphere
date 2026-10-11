@@ -1,0 +1,13 @@
+.DS_Store
+
+# Private witnesses, proving intermediates, and execution measurements.
+/.proofsphere-private/
+
+# LaTeX build sidecars; keep the source and companion PDF.
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
